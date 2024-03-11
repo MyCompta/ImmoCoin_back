@@ -47,7 +47,7 @@ group :development, :test do
   gem 'brakeman', '~> 6.1', '>= 6.1.2'
   gem 'debug', platforms: %i[mri windows]
   gem 'dotenv-rails', groups: [:development, :test]
-  gem 'factory_bot_rails', '~> 6.4', '>= 6.4.3', require: false
+  gem 'factory_bot_rails'
   gem 'faker', '~> 3.2'
   gem 'guard-rspec', '~> 4.7', '>= 4.7.3'
   gem 'letter_opener', '~> 1.4', '>= 1.4.1'
