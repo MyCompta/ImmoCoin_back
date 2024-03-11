@@ -68,3 +68,6 @@ group :development do
 end
 
 gem "dockerfile-rails", ">= 1.6", :group => :development
+
+
+gem 'table_print', '~> 1.5', '>= 1.5.7'
