@@ -10,6 +10,7 @@ RSpec.describe Property, type: :model do
     it { should validate_presence_of(:price) }
     it { should validate_numericality_of(:price).only_integer }
     it { should validate_presence_of(:description) }
+    it { should valdiate_presence_of(:location) }
   end
 
   describe 'associations' do

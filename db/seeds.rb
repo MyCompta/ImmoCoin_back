@@ -9,10 +9,13 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+users =[]
+
 10.times do
-  User.create(email: Faker::Internet.email, password: "password")
+  users << User.create(email: Faker::Internet.email, password: "password")
+
 end
 
 10.times do
-  Property.create(title: Faker::Lorem.sentence, description: Faker::Lorem.paragraph, price: rand(100_000..1_000_000), user_id: rand(1..10))
+  Property.create(title: Faker::Lorem.sentence, description: Faker::Lorem.paragraph, price: rand(100_000..1_000_000), user_id: users.sample.id, location: Faker::Address.city)
 end
