@@ -57,6 +57,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_12_114521) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "furnished", default: false, null: false
+    t.boolean "terrace", default: false, null: false
+    t.boolean "garden", default: false, null: false
+    t.boolean "caretaker", default: false, null: false
+    t.boolean "lift", default: false, null: false
+    t.integer "surface", default: 0, null: false
+    t.integer "room", default: 0, null: false
+    t.integer "floor", default: 0, null: false
     t.string "location"
     t.index ["user_id"], name: "index_properties_on_user_id"
   end

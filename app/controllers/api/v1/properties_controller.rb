@@ -25,6 +25,7 @@ class Api::V1::PropertiesController < ApplicationController
   # POST /properties
   def create
     @property = Property.new(property_params)
+    @property.user = current_user
 
     if @property.save
       render json: @property, status: :created
@@ -63,7 +64,9 @@ class Api::V1::PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
-      params.require(:property).permit(:title, :price, :description, :user_id, :location)
+
+      params.require(:property).permit(:title, :price, :description, :location, :furnished, :surface, :room, :floor, :terrace, :garden, :caretaker, :lift)
+
     end
 
     def filter_params

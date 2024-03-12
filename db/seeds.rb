@@ -9,6 +9,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+Faker.locale = 'fr'
 users =[]
 
 10.times do
@@ -17,5 +18,5 @@ users =[]
 end
 
 10.times do
-  Property.create(title: Faker::Lorem.sentence, description: Faker::Lorem.paragraph, price: rand(100_000..1_000_000), user_id: users.sample.id, location: Faker::Address.city)
+  Property.create(title: Faker::Lorem.sentence, description: Faker::Lorem.paragraph, price: rand(100_000..1_000_000), user_id: users.sample.id, location: Faker::Address.city, furnished: [true, false].sample, surface: rand(10..100), room: rand(1..10), floor: rand(0..10), terrace: [true, false].sample, garden: [true, false].sample, caretaker: [true, false].sample, lift: [true, false].sample)
 end
