@@ -19,7 +19,7 @@ class Api::V1::PropertiesController < ApplicationController
 
   # GET /properties/1
   def show
-    render json: @property
+    render json: @property.attributes.merge(owner_email: @property.user.email)
   end
 
   # POST /properties
