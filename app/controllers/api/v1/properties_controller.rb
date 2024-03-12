@@ -4,15 +4,15 @@ class Api::V1::PropertiesController < ApplicationController
 
   # GET /properties
   def index
-    if filter_params && filter_params[:owned]
-      if current_user
-        @properties = Property.where(user: current_user)
-      else
-        return render json: { message: 'Only logged in users can see their properties' }, status: :unauthorized
-      end
-    else
+    # if filter_params && filter_params[:owned]
+    #   if current_user
+    #     @properties = Property.where(user: current_user)
+    #   else
+    #     return render json: { message: 'Only logged in users can see their properties' }, status: :unauthorized
+    #   end
+    # else
       @properties = Property.all
-    end
+    # end
 
     render json: @properties
   end
@@ -64,7 +64,9 @@ class Api::V1::PropertiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def property_params
+
       params.require(:property).permit(:title, :price, :description, :furnished, :surface, :room, :floor, :terrace, :garden, :caretaker, :lift)
+
     end
 
     def filter_params
