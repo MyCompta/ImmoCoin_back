@@ -18,14 +18,14 @@ class Api::V1::PropertiesController < ApplicationController
   end
 
   # GET /properties/1
-  def show
-    render json: @property.attributes.merge(owner_email: @property.user.email, images: @property.images.map { |image| url_for(image) })
-  end
-
   #def show
-   # images_data = @property.images.map { |image| { id: image.id, url: url_for(image) } }
-   # render json: @property.attributes.merge(owner_email: @property.user.email, images: images_data)
+    #render json: @property.attributes.merge(owner_email: @property.user.email, images: @property.#images.map { |image| url_for(image) })
   #end
+
+  def show
+    images_data = @property.images.map { |image| { id: image.id, url: url_for(image) } }
+    render json: @property.attributes.merge(owner_email: @property.user.email, images: images_data)
+  end
 
 
   # POST /properties
@@ -50,8 +50,19 @@ class Api::V1::PropertiesController < ApplicationController
 # PATCH/PUT /properties/1
 def update
   if current_user == @property.user
+    images_to_delete = params[:deleted_images] if params[:deleted_images].present?
     images = params[:property][:images] if params[:property].present?
 
+    # Supprimer les images sélectionnées
+    if images_to_delete
+      images_to_delete = JSON.parse(images_to_delete)
+      images_to_delete.each do |image_id|
+        image = @property.images.find(image_id)
+        image.purge
+      end
+    end
+
+    # Attacher de nouvelles images, si nécessaire
     if images
       images.each do |image|
         @property.images.attach(image)
@@ -67,6 +78,7 @@ def update
     render json: { message: 'Only the owner of the property can update it' }, status: :unauthorized
   end
 end
+
 
 
   # DELETE /properties/1
