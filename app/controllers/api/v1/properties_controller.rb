@@ -22,6 +22,12 @@ class Api::V1::PropertiesController < ApplicationController
     render json: @property.attributes.merge(owner_email: @property.user.email, images: @property.images.map { |image| url_for(image) })
   end
 
+  #def show
+   # images_data = @property.images.map { |image| { id: image.id, url: url_for(image) } }
+   # render json: @property.attributes.merge(owner_email: @property.user.email, images: images_data)
+  #end
+
+
   # POST /properties
   def create
     @property = Property.new(property_params.except(:images))
@@ -41,18 +47,26 @@ class Api::V1::PropertiesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /properties/1
-  def update
-    if current_user == @property.user
-      if @property.update(property_params)
-        render json: @property
-      else
-        render json: @property.errors, status: :unprocessable_entity
+# PATCH/PUT /properties/1
+def update
+  if current_user == @property.user
+    images = params[:property][:images] if params[:property].present?
+
+    if images
+      images.each do |image|
+        @property.images.attach(image)
       end
-    else
-      render json: { message: 'Only the owner of the property can update it' }, status: :unauthorized
     end
+
+    if @property.update(property_params.except(:images))
+      render json: @property
+    else
+      render json: @property.errors, status: :unprocessable_entity
+    end
+  else
+    render json: { message: 'Only the owner of the property can update it' }, status: :unauthorized
   end
+end
 
 
   # DELETE /properties/1
