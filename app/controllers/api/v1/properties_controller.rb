@@ -19,13 +19,20 @@ class Api::V1::PropertiesController < ApplicationController
 
   # GET /properties/1
   def show
-    render json: @property.attributes.merge(owner_email: @property.user.email)
+    render json: @property.attributes.merge(owner_email: @property.user.email, images: @property.images.map { |image| url_for(image) })
   end
 
   # POST /properties
   def create
-    @property = Property.new(property_params)
+    @property = Property.new(property_params.except(:images))
     @property.user = current_user
+    images = params[:property][:images]
+
+    if images
+      images.each do |image|
+        @property.images.attach(image)
+      end
+    end
 
     if @property.save
       render json: @property, status: :created
@@ -47,6 +54,7 @@ class Api::V1::PropertiesController < ApplicationController
     end
   end
 
+
   # DELETE /properties/1
   def destroy
     if current_user == @property.user
@@ -65,7 +73,7 @@ class Api::V1::PropertiesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def property_params
 
-      params.require(:property).permit(:title, :price, :description, :location, :furnished, :surface, :room, :floor, :terrace, :garden, :caretaker, :lift)
+      params.require(:property).permit(:title, :price, :description, :location, :furnished, :surface, :room, :floor, :terrace, :garden, :caretaker, :lift, :user_id, images: [])
 
     end
 
