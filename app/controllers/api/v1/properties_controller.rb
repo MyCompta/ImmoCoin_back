@@ -54,6 +54,7 @@ class Api::V1::PropertiesController < ApplicationController
     end
   end
 
+
   # DELETE /properties/1
   def destroy
     if current_user == @property.user
