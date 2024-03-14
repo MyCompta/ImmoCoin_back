@@ -14,7 +14,7 @@ class Api::V1::PropertiesController < ApplicationController
       @properties = Property.all
     end
 
-    render json: @properties
+    render json: @properties.map{|property| property.attributes.merge(images: property.images.map { |image| url_for(image) })}
   end
 
   # GET /properties/1
